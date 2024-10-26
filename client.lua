@@ -82,17 +82,36 @@ CreateThread(function()
     end
 end)
 
--- qb-menu
+-- Menu
 RegisterNetEvent('tr-blackmarket:OpenShop', function()
     local BlackMarket = {
-        { header = Config.Text['PedHeader'], isMenuHeader = true, icon = Config.Icons["Header"] },
-        { header = Config.Text['Pistols'], icon = Config.Icons['Pistol'], params = { event = "tr-blackmarket:PistolShop" } },
-        { header = Config.Text['SubMachineGuns'], icon = Config.Icons['SubMachineGuns'], params = { event = "tr-blackmarket:SubMachineGunsShop" } },
-        { header = Config.Text['Shotguns'], icon = Config.Icons['Shotguns'], params = { event = "tr-blackmarket:ShotGunsShop" } },
-        { header = Config.Text['AssaultWeapons'], icon = Config.Icons['AssaultWeapons'], params = { event = "tr-blackmarket:AssaultWeaponsShop" } },
-        { header = Config.Text['Miscellanceous'], icon = Config.Icons['Miscellanceous'], params = { event = "tr-blackmarket:MiscellanceousShop" } }
+        { title = Config.Text['PedHeader'], description = nil, icon = Config.Icons["Header"], event = nil },
+        { title = Config.Text['Pistols'], description = nil, icon = Config.Icons['Pistol'], event = "tr-blackmarket:PistolShop" },
+        { title = Config.Text['SubMachineGuns'], description = nil, icon = Config.Icons['SubMachineGuns'], event = "tr-blackmarket:SubMachineGunsShop" },
+        { title = Config.Text['Shotguns'], description = nil, icon = Config.Icons['Shotguns'], event = "tr-blackmarket:ShotGunsShop" },
+        { title = Config.Text['AssaultWeapons'], description = nil, icon = Config.Icons['AssaultWeapons'], event = "tr-blackmarket:AssaultWeaponsShop" },
+        { title = Config.Text['Miscellanceous'], description = nil, icon = Config.Icons['Miscellanceous'], event = "tr-blackmarket:MiscellanceousShop" }
     }
-    exports['qb-menu']:openMenu(BlackMarket)
+
+    if Config.UseOxLib and lib and lib.showContext then
+        lib.registerContext({
+            id = 'blackmarket_menu',
+            title = Config.Text['PedHeader'],
+            options = BlackMarket
+        })
+        lib.showContext('blackmarket_menu')
+    else
+        local qbMenuOptions = {}
+        for _, item in ipairs(BlackMarket) do
+            table.insert(qbMenuOptions, {
+                header = item.title,
+                icon = item.icon,
+                isMenuHeader = item.event == nil,
+                params = { event = item.event }
+            })
+        end
+        exports['qb-menu']:openMenu(qbMenuOptions)
+    end
 end)
 
 -- BlackMarket Shop Event
