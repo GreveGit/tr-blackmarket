@@ -1,7 +1,7 @@
 Config = {}
 
 Config.UseBlip = true                      -- [true to enable the blip | false disables the blip]
-Config.ItemCheck = true                    -- true for item check / false for no item
+Config.ItemCheck = false                    -- true for item check / false for no item
 Config.Item = 'itemhere'
 Config.UseOxLib = true -- Set to false to use qb-menu instead
 
